@@ -53,7 +53,7 @@ def trainModel(model,saveName):
         epochs = 10
     )
 
-    model.save(f"model/{saveName}.h5")
+    model.save(f"../trainedModels/{saveName}.h5")
     plotData(history)
 
 
@@ -63,7 +63,7 @@ def testModel(modelName):
     x_test = np.array([dt[0] for dt in testData])
     y_test = np.array([dt[1] for dt in testData])
     x_test = x_test/255
-    loaded_model = tf.keras.models.load_model(f"model/{modelName}.h5")
+    loaded_model = tf.keras.models.load_model(f"../trainedModels/{modelName}.h5")
     loaded_model.evaluate(x_test, y_test)
 
 
@@ -72,7 +72,7 @@ def predictImage(modelName):
     data = getCategoryImageData("val", "PNEUMONIA")
     x= np.array([dt[0] for dt in data])
     x = x/255
-    loaded_model = tf.keras.models.load_model(f"model/{modelName}.h5")
+    loaded_model = tf.keras.models.load_model(f"../trainedModels/{modelName}.h5")
     predict = loaded_model.predict(x)
     print(predict)
 

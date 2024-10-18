@@ -33,7 +33,7 @@ def trainModel(modelName, saveName):
         validation_data=(x_val, y_val) 
     )
     # Save in HDF5 format
-    modelName.save(f"model/{saveName}.h5")  
+    modelName.save(f"../trainedModels/{saveName}.h5")  
 
     # plot data
     plt.plot(history.history['loss'], label='Train Loss')
@@ -52,18 +52,18 @@ def testModel(name):
     x_test = np.array([dt[0] for dt in testData])
     y_test = np.array([dt[1] for dt in testData])
     x_test = x_test/255
-    loaded_model = tf.keras.models.load_model(f"model/{name}.h5")
+    loaded_model = tf.keras.models.load_model(f"../trainedModels/{name}.h5")
     loaded_model.evaluate(x_test, y_test)
 
 def predictImage(modelName):
     data = getCategoryImageData("val", "PNEUMONIA")
     x= np.array([dt[0] for dt in data])
     x = x/255
-    loaded_model = tf.keras.models.load_model(f"model/{modelName}.h5")
+    loaded_model = tf.keras.models.load_model(f"../trainedModels/{modelName}.h5")
     predict = loaded_model.predict(x)
     print(predict)
 
-testModel("model12")
+predictImage("model12")
 '''
 # class to describe a neural network
 class Network:
