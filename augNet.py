@@ -18,7 +18,7 @@ def trainModel(model):
     # Creates an instance of ImageDataGenerator
     train_datagen = ImageDataGenerator(
         rescale=1./255,          # Normalizes the images
-        rotation_range=3,       
+        rotation_range=10,       
         width_shift_range=0.1,   
         zoom_range=0.1,          
         horizontal_flip=True,   
@@ -51,7 +51,7 @@ def trainModel(model):
         steps_per_epoch = np.ceil(train_generator.samples / train_generator.batch_size),
         validation_data = validation_generator,
         validation_steps = np.ceil(validation_generator.samples / validation_generator.batch_size),
-        epochs = 20
+        epochs = 30
     )
 
     model.save(f"../trainedModels/model1/{saveName}.h5")
@@ -59,7 +59,8 @@ def trainModel(model):
 
 
 #Function to test the model on test data
-def testModel(model,modelName):
+def testModel():
+    modelName = input("Enter model name: ")
     testData = get_general_imageData("test")
     x_test = np.array([dt[0] for dt in testData])
     y_test = np.array([dt[1] for dt in testData])
@@ -69,8 +70,9 @@ def testModel(model,modelName):
 
 
 # Predict Image class
-def predictImage(model, modelName):
-    data = getCategoryImageData("val", "PNEUMONIA")
+def predictImage():
+    modelName = input("Enter model name: ")
+    data = getCategoryImageData("val", "NORMAL")
     x= np.array([dt[0] for dt in data])
     x = x/255
     loaded_model = tf.keras.models.load_model(f"../trainedModels/model1/{modelName}.h5")
@@ -89,5 +91,5 @@ def plotData(history, saveName):
     plt.show()
 
 trainModel(model1)
-# predictImage("model14")
-# testModel('model14')
+# predictImage()
+# testModel()
