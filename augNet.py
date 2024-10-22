@@ -1,5 +1,6 @@
 from image.images import get_general_imageData, getCategoryImageData
-from model.intro import model1,model2,model3
+from model.intro import model1,model3
+from model.tflModel import tfModel
 import numpy as np
 import tensorflow as tf 
 from tensorflow.keras.losses import BinaryCrossentropy # type: ignore
@@ -20,13 +21,19 @@ def trainModel(model):
         rescale=1./255,          # Normalizes the images
         rotation_range=10,       
         width_shift_range=0.1,   
-        zoom_range=0.1,          
-        horizontal_flip=True,   
+        zoom_range=0.2,      
+        brightness_range=[0.8, 1.2],   
+        shear_range=0.2,
+        vertical_flip = True,
+        horizontal_flip=False,   
         fill_mode='nearest'      
     )
 
     # For validation or test data, Only rescaling is done 
-    test_datagen = ImageDataGenerator(rescale=1./255)
+    test_datagen = ImageDataGenerator(
+        rescale=1./255,          # Normalizes the images
+        )
+
 
     # Generates a batch of images
     train_generator = train_datagen.flow_from_directory(
@@ -51,7 +58,7 @@ def trainModel(model):
         steps_per_epoch = np.ceil(train_generator.samples / train_generator.batch_size),
         validation_data = validation_generator,
         validation_steps = np.ceil(validation_generator.samples / validation_generator.batch_size),
-        epochs = 30
+        epochs = 10
     )
 
     model.save(f"../trainedModels/model1/{saveName}.h5")
@@ -61,7 +68,7 @@ def trainModel(model):
 #Function to test the model on test data
 def testModel():
     modelName = input("Enter model name: ")
-    testData = get_general_imageData("test")
+    testData = get_general_imageData("val")
     x_test = np.array([dt[0] for dt in testData])
     y_test = np.array([dt[1] for dt in testData])
     x_test = x_test/255
@@ -90,6 +97,4 @@ def plotData(history, saveName):
     plt.legend()
     plt.show()
 
-trainModel(model1)
-# predictImage()
-# testModel()
+trainModel(model3)
