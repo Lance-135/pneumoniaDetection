@@ -13,19 +13,20 @@ model1 = Sequential([
     # Convolutional Layers
     Conv2D(filters = 32, kernel_size = (3,3), activation = "relu", kernel_regularizer = tf.keras.regularizers.l2(0.01)),
     MaxPooling2D(pool_size =(2,2) ),
-    Conv2D(filters = 64, kernel_size = (3,3), activation = "relu"),
+    Conv2D(filters = 64, kernel_size = (3,3), activation = "relu", kernel_regularizer = tf.keras.regularizers.l2(0.001)),
     MaxPooling2D(pool_size = (2,2)),
     Conv2D(filters = 128, kernel_size = (3,3), activation = "relu"),
     MaxPooling2D(pool_size = (2,2)),
-    # Conv2D(filters = 256, kernel_size = (3,3), activation = "relu", kernel_regularizer=tf.keras.regularizers.l2(reg1)),
+    # Conv2D(filters = 256, kernel_size = (3,3), activation = "relu"),
     # MaxPooling2D(pool_size = (2,2)),
 
     Flatten(),
 
     # Dense Layers
-    Dense(units = 64, activation = "relu",  kernel_regularizer=tf.keras.regularizers.l2(0.01)),
-    Dense(units = 32, activation = "relu" ,kernel_regularizer=tf.keras.regularizers.l2(0.01)),
-    Dense(units = 8, activation = "relu" ,kernel_regularizer=tf.keras.regularizers.l2(0.01)),
+    Dense(units = 128, activation = "relu", kernel_regularizer = tf.keras.regularizers.l2(0.001)), #for model18
+    Dense(units = 64, activation = "relu",  kernel_regularizer = tf.keras.regularizers.l2(0.01)),
+    Dense(units = 32, activation = "relu" ,kernel_regularizer = tf.keras.regularizers.l2(0.03)),
+    Dense(units = 8, activation = "relu" ,kernel_regularizer = tf.keras.regularizers.l2(0.03)),
     
     # Output Layer
     Dense(units = 1, activation = "sigmoid")
@@ -38,18 +39,29 @@ model1.compile(optimizer = Adam(0.001), loss = BinaryCrossentropy(), metrics = [
 
 
 model2 = Sequential([
-    tf.keras.Input(shape=(500,500,1)),
+    tf.keras.Input(shape = (300,300,1)),
+
+    # Convolutional Layers
+    Conv2D(filters = 32, kernel_size = (3,3), activation = "relu"),
+    MaxPooling2D(pool_size =(2,2) ),
     Conv2D(filters = 64, kernel_size = (3,3), activation = "relu"),
     MaxPooling2D(pool_size = (2,2)),
-    Conv2D(filters = 32, kernel_size = (3,3), activation = "relu"),
-    MaxPooling2D(pool_size= (2,2)),
+    Conv2D(filters = 128, kernel_size = (3,3), activation = "relu"),
+    MaxPooling2D(pool_size = (2,2)),
+    Conv2D(filters = 256, kernel_size = (3,3), activation = "relu"),
+    MaxPooling2D(pool_size = (2,2)),
+    Conv2D(filters = 512, kernel_size = (3,3), activation = "relu"),
+    MaxPooling2D(pool_size = (2,2)),
 
     Flatten(),
 
-    Dense(units = 32, activation = "relu", kernel_regularizer = tf.keras.regularizers.l2(0.001)),
-    Dense(units = 16,activation = "relu", kernel_regularizer = tf.keras.regularizers.l2(0.001)),
-    Dense(units = 8, activation = "relu", kernel_regularizer = tf.keras.regularizers.l2(0.001)),
-    Dense(units = 1 , activation = "sigmoid")
+    # Dense Layers
+    Dense(units = 64, activation = "relu",  kernel_regularizer=tf.keras.regularizers.l2(0.01)),
+    Dense(units = 32, activation = "relu" ,kernel_regularizer=tf.keras.regularizers.l2(0.01)),
+    Dense(units = 8, activation = "relu" ,kernel_regularizer=tf.keras.regularizers.l2(0.03)),
+    
+    # Output Layer
+    Dense(units = 1, activation = "sigmoid")
 ])
  
 model2.compile(optimizer = Adam(0.001), loss = BinaryCrossentropy(), metrics = ["accuracy"])
