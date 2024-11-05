@@ -1,0 +1,29 @@
+model32,train_acc: 0.9508013129234314,train_loss: 0.16060028970241547,val_acc: 0.9038461446762085,val_loss: 0.37874746322631836
+
+model32,train_acc:  0.9471,train_loss:  0.1956,val_acc:  0.8910,val_loss:  0.3802
+
+model32,train_acc:  0.9426,train_loss:  0.1985,val_acc:  0.9006,val_loss:  0.3114
+
+model32,train_acc:  0.9501,train_loss:  0.1955,val_acc:  0.9038,val_loss:  0.3745
+
+model32,train_acc:  0.9474,train_loss:  0.1926,val_acc:  0.8894,val_loss:  0.3623
+
+model32,train_acc:  0.9553,train_loss:  0.1861,val_acc:  0.9054,val_loss:  0.3618
+
+model32,train_acc:  0.9527,train_loss:  0.1611,val_acc:  0.9183,val_loss:  0.3424
+
+model33,train_acc:  0.9519,train_loss:  0.1760,val_acc:  0.9151,val_loss:  0.3148
+
+model34,train_acc:  0.9553,train_loss:  0.1358,val_acc:  0.9006,val_loss:  0.3541
+
+model34,train_acc:  0.9348,train_loss:  0.1935,val_acc:  0.8429,val_loss:  0.4308
+
+model34,train_acc:  0.9366,train_loss:  0.1807,val_acc:  0.8910,val_loss:  0.3722
+
+model34,train_acc:  0.9436,train_loss:  0.1727,val_acc:  0.9247,val_loss:  0.3453
+
+model35,train_acc:  0.9517,train_loss:  0.1494,val_acc:  0.9199,val_loss:  0.3574
+
+
+
+model35,train_acc:  0.9573,train_loss:  0.1341,val_acc:  0.9343,val_loss:  0.2396
