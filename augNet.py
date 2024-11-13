@@ -10,7 +10,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator  # type: ign
 from tensorflow.keras.callbacks import EarlyStopping # type: ignore
 import matplotlib.pyplot as plt
 import csv
-
+from tools import createCheckPoint, imageGenerator
 
 # Function to Train model 
 def trainModel(model):
@@ -20,22 +20,7 @@ def trainModel(model):
     saveName = input("Enter name of the model: ")
 
     # Creates an instance of ImageDataGenerator
-    train_datagen = ImageDataGenerator(
-        rescale=1./255,          # Normalizes the images
-        rotation_range=10,       
-        width_shift_range=0.1,   
-        zoom_range=0.2,      
-        brightness_range=[0.8, 1.2],   
-        shear_range=0.2,
-        vertical_flip = True,
-        horizontal_flip= False,   
-        fill_mode='nearest'      
-    )
-
-    # For validation or test data, Only rescaling is done 
-    test_datagen = ImageDataGenerator(
-        rescale=1./255,          # Normalizes the images
-        )
+    train_datagen, test_datagen = imageGenerator()
 
 
     # Generates a batch of images
@@ -53,13 +38,19 @@ def trainModel(model):
         batch_size=16,
         class_mode='binary',
         color_mode='grayscale'
-    )   
+    )
+    # call back functions   
     # instance of early stopping 
     earlyStopping = EarlyStopping(
         monitor = "val_loss",
         patience = 5,
         restore_best_weights = True
     )
+    
+    #creating checkpoint for the model
+    filePath = f"../trainedModels/model3/{saveName}.h5" 
+    checkpoint = createCheckPoint(filePath)
+
     # Normal = 0, Pneumonia = 1 .. automatically assigned based on Alphabetical order
     # fit the data on the model 
     history = model.fit(
@@ -68,10 +59,9 @@ def trainModel(model):
         validation_data = validation_generator,
         validation_steps = np.ceil(validation_generator.samples / validation_generator.batch_size),
         epochs = 20,
-        callbacks = [earlyStopping]
+        callbacks = [checkpoint]
     )
 
-    model.save(f"../trainedModels/model1/{saveName}.h5")
     plotData(history,saveName)
     saveResults(history, saveName)
 
@@ -113,8 +103,8 @@ def predictImage():
     x = x/255
     print(x.shape)
     loaded_model = tf.keras.models.load_model(f"../trainedModels/model1/{modelName}.h5")
-    loaded_model.summary()
-    predict = loaded_model.predict(x)
+    # loaded_model.summary()
+    predict = loaded_model.predict(x)   
     print(predict[0:20])
    
 
@@ -146,7 +136,7 @@ def saveResults(history, saveName):
             f"train_loss: {trainLoss: 0.4f}", 
             f"val_acc: {valAcc: 0.4f}",
             f"val_loss: {valLoss: 0.4f}"])
-summary()
+# summary()
 # trainModel(model3)
-# testModel()
+testModel()
 # predictImage()

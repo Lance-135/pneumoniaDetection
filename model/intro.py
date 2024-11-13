@@ -57,15 +57,16 @@ model3 = Sequential([
 
     Conv2D(filters = 512, kernel_size = (3,3), activation = "relu", kernel_regularizer = tf.keras.regularizers.l2(0.000)),
     MaxPooling2D(pool_size= (2,2)),
-
-    Conv2D(filters = 1024, kernel_size = (3,3), activation = "relu", kernel_regularizer = tf.keras.regularizers.l2(0.00015)),
+    
+    Conv2D(filters = 1024, kernel_size = (3,3), activation = "relu", kernel_regularizer = tf.keras.regularizers.l2(0.0002)),
     MaxPooling2D(pool_size= (2,2)),
 
 
     Flatten(),
 
-    Dense(units = 512, activation = "relu", kernel_regularizer = tf.keras.regularizers.l2(0.006)),
+    Dense(units = 512, activation = "relu", kernel_regularizer = tf.keras.regularizers.l2(0.01)),
     Dense(units = 1 , activation = "sigmoid")
 ])
 
 model3.compile(optimizer = Adam(0.0001), loss = BinaryCrossentropy(), metrics = ["accuracy"])
+model3.summary()
