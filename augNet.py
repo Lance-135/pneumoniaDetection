@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 # Function to Train model 
 def trainModel(model,saveName):
     # defining the data directories 
-    train_dir  = "D:/AustinKarki/repos/inputData/train"
-    test_dir  = "D:/AustinKarki/repos/inputData/test"
+    train_dir  = "D:\College\Sixth_sem\project\chest_xray\train"
+    test_dir  = "D:\College\Sixth_sem\project\chest_xray\test"
 
     # Creates an instance of ImageDataGenerator
     train_datagen = ImageDataGenerator(
@@ -59,7 +59,7 @@ def trainModel(model,saveName):
 
 #Function to test the model on test data
 def testModel(modelName):
-    testData = get_general_imageData("test")
+    testData = get_general_imageData("val")
     x_test = np.array([dt[0] for dt in testData])
     y_test = np.array([dt[1] for dt in testData])
     x_test = x_test/255
@@ -87,3 +87,4 @@ def plotData(history):
     plt.legend()
     plt.show()
 
+testModel("model12")
