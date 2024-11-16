@@ -17,8 +17,9 @@ def getCategoryImageData(type, category ):
     # Loop through the image files
     for file in image_files:
         img = cv2.imread(file, cv2.IMREAD_GRAYSCALE)
-        img_resized = cv2.resize(img, (500,500))
-        img_3d = np.expand_dims(img_resized, axis = -1)
+        img_resized = cv2.resize(img, (256,256))
+        img_3d = np.expand_dims(img_resized, axis = -1) # for other models
+        # img_3d= cv2.cvtColor(img_resized, cv2.COLOR_GRAY2RGB) #for tfModel
         if category== "NORMAL":
             imgData.append((img_3d,0))
         else:

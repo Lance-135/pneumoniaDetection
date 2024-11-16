@@ -63,7 +63,7 @@ def predictImage(modelName):
     predict = loaded_model.predict(x)
     print(predict)
 
-predictImage("model12")
+model1.summary()
 '''
 # class to describe a neural network
 class Network:
