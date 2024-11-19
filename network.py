@@ -16,8 +16,8 @@ import matplotlib.pyplot as plt
 #Function to train model 
 def trainModel(modelName, saveName): 
     #load training and cross validation data from the directory
-    trainData = get_general_imageData("train")
-    valData = get_general_imageData("test")
+    trainData = get_general_imageData("val")
+    valData = get_general_imageData("val")
 
     #seperating the image data and labels 
     x_train = np.array([dt[0] for dt in trainData])

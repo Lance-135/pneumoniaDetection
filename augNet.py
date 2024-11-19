@@ -15,14 +15,9 @@ from tools import createCheckPoint, imageGenerator
 # Function to Train model 
 def trainModel(model):
     # defining the data directories 
-<<<<<<< HEAD
+
     train_dir  = "D:\College\Sixth_sem\project\chest_xray\train"
     test_dir  = "D:\College\Sixth_sem\project\chest_xray\test"
-=======
-    train_dir  = "D:/AustinKarki/repos/inputData/train"
-    test_dir  = "D:/AustinKarki/repos/inputData/test"
-    saveName = input("Enter name of the model: ")
->>>>>>> f3eba25eb9e44e64fe3e4995961074894ba5fd5f
 
     # Creates an instance of ImageDataGenerator
     train_datagen, test_datagen = imageGenerator()
@@ -72,18 +67,9 @@ def trainModel(model):
 
 
 #Function to test the model on test data
-<<<<<<< HEAD
-def testModel(modelName):
-    testData = get_general_imageData("val")
-    x_test = np.array([dt[0] for dt in testData])
-    y_test = np.array([dt[1] for dt in testData])
-    x_test = x_test/255
-    loaded_model = tf.keras.models.load_model(f"../trainedModels/{modelName}.h5")
-    loaded_model.evaluate(x_test, y_test)
-=======
 def testModel():
     modelName = input("Enter model name: ")
-    data = get_general_imageData("test")
+    data = get_general_imageData("Val")
     x = np.array([dt[0]/255 for dt in data])
     y = np.array([dt[1] for dt in data])
     ndata = getCategoryImageData("test", "NORMAL")
@@ -107,7 +93,6 @@ def testModel():
             p +=1
     print(f"total PNEUMONIA images: {len(xp)}, classified as PNEUMONIA: {p}")
     loaded_model.evaluate(x,y)
->>>>>>> f3eba25eb9e44e64fe3e4995961074894ba5fd5f
 
 
 # Predict Image class
@@ -133,9 +118,6 @@ def plotData(history, saveName):
     plt.legend()
     plt.show()
 
-<<<<<<< HEAD
-testModel("model12")
-=======
 def summary():
     modelName = input("Name the model to load: ")
     model = tf.keras.models.load_model(f"../trainedModels/model1/{modelName}.h5")
@@ -158,4 +140,3 @@ def saveResults(history, saveName):
 # trainModel(model3)
 testModel()
 # predictImage()
->>>>>>> f3eba25eb9e44e64fe3e4995961074894ba5fd5f
