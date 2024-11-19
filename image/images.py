@@ -8,7 +8,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator # type: igno
 
 # Get a list of touple with the (image in grayscale, 0 or 1)
 def getCategoryImageData(type, category ):
-    folder_path = f"D:/AustinKarki/repos/inputData/{type}/{category}/*.jpeg"  # Change to '*.jpg' or any other extension
+    folder_path = f"D:/College/Sixth_sem/project/chest_xray/{type}/{category}/*.jpeg"  # Change to '*.jpg' or any other extension
     #initializing an empty array
     imgData= []
     # Get a list of all image files in the folder

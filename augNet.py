@@ -15,9 +15,10 @@ from tools import createCheckPoint, imageGenerator
 # Function to Train model 
 def trainModel(model):
     # defining the data directories 
+
     train_dir  = "D:/AustinKarki/repos/inputData/train"
     test_dir  = "D:/AustinKarki/repos/inputData/test"
-    saveName = input("Enter name of the model: ")
+    saveName = input("Enter the model name: ")
 
     # Creates an instance of ImageDataGenerator
     train_datagen, test_datagen = imageGenerator()
@@ -72,7 +73,7 @@ def trainModel(model):
 #Function to test the model on test data
 def testModel():
     modelName = input("Enter model name: ")
-    data = get_general_imageData("test")
+    data = get_general_imageData("Val")
     x = np.array([dt[0]/255 for dt in data])
     y = np.array([dt[1] for dt in data])
     ndata = getCategoryImageData("test", "NORMAL")
@@ -95,7 +96,6 @@ def testModel():
         if prediction[0] > 0.5:
             p +=1
     print(f"total PNEUMONIA images: {len(xp)}, classified as PNEUMONIA: {p}")
-    loaded_model.evaluate(x,y)
 
 
 # Predict Image class
