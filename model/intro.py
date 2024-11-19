@@ -69,4 +69,3 @@ model3 = Sequential([
 ])
 
 model3.compile(optimizer = Adam(0.0001), loss = BinaryCrossentropy(), metrics = ["accuracy"])
-model3.summary()

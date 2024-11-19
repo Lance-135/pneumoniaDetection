@@ -1,7 +1,7 @@
 from gc import callbacks
 from image.images import get_general_imageData, getCategoryImageData
 from model.intro import model1,model3
-from model.tflModel import tfModel
+from tflModel import tfModel
 import numpy as np
 import tensorflow as tf 
 from tensorflow.keras.losses import BinaryCrossentropy # type: ignore
@@ -29,7 +29,8 @@ def trainModel(model):
         target_size=(256,256),   
         batch_size=16,             
         class_mode='binary',       
-        color_mode='grayscale'     
+        # color_mode='grayscale'     
+        color_mode= "rgb"
     )
 
     validation_generator = test_datagen.flow_from_directory(
@@ -37,7 +38,8 @@ def trainModel(model):
         target_size=(256,256),    
         batch_size=16,
         class_mode='binary',
-        color_mode='grayscale'
+        # color_mode='grayscale' # For normal model 
+        color_mode= "rgb"
     )
     # call back functions   
     # instance of early stopping 
@@ -48,7 +50,8 @@ def trainModel(model):
     )
     
     #creating checkpoint for the model
-    filePath = f"../trainedModels/model3/{saveName}.h5" 
+    # filePath = f"../trainedModels/model3/{saveName}.h5" 
+    filePath = f"../trainedModels/tfmodel/{saveName}.h5"
     checkpoint = createCheckPoint(filePath)
 
     # Normal = 0, Pneumonia = 1 .. automatically assigned based on Alphabetical order
@@ -58,7 +61,7 @@ def trainModel(model):
         steps_per_epoch = np.ceil(train_generator.samples / train_generator.batch_size),
         validation_data = validation_generator,
         validation_steps = np.ceil(validation_generator.samples / validation_generator.batch_size),
-        epochs = 20,
+        epochs = 5,
         callbacks = [checkpoint]
     )
 
@@ -137,6 +140,6 @@ def saveResults(history, saveName):
             f"val_acc: {valAcc: 0.4f}",
             f"val_loss: {valLoss: 0.4f}"])
 # summary()
-# trainModel(model3)
-testModel()
+trainModel(tfModel)
+# testModel()
 # predictImage()
