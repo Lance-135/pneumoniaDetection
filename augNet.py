@@ -72,14 +72,14 @@ def testModel():
     data = get_general_imageData("Val")
     x = np.array([dt[0]/255 for dt in data])
     y = np.array([dt[1] for dt in data])
-    ndata = getCategoryImageData("test", "NORMAL")
-    pdata = getCategoryImageData("test", "PNEUMONIA")
+    ndata = getCategoryImageData("val", "NORMAL")
+    pdata = getCategoryImageData("val", "PNEUMONIA")
     # data = get_general_imageData("test")
     xn= np.array([dt[0] for dt in ndata])
     xn = xn/255
     xp = np.array([dt[0] for dt in pdata])
     xp = xp/255
-    loaded_model = tf.keras.models.load_model(f"../trainedModels/model1/{modelName}.h5")
+    loaded_model = tf.keras.models.load_model(f"../trainedModels/{modelName}.h5")
     predict = loaded_model.predict(xn)
     n = 0
     p = 0
@@ -92,7 +92,6 @@ def testModel():
         if prediction[0] > 0.5:
             p +=1
     print(f"total PNEUMONIA images: {len(xp)}, classified as PNEUMONIA: {p}")
-    loaded_model.evaluate(x,y)
 
 
 # Predict Image class

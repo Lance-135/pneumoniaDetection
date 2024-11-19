@@ -53,10 +53,10 @@ def predict():
     preprocessed_image = preprocess_image(image_path)
 
     # Make a prediction
-    prediction = float(model.predict(preprocessed_image)[0][0])  # Convert float32 to Python float
+    prediction = model.predict(preprocessed_image)[0][0]  
     result = "Pneumonia Detected" if prediction > 0.5 else "No Pneumonia"
-    accuracy = float(prediction if prediction > 0.5 else 1 - prediction)  # Convert accuracy to Python float
-
+    accuracy = prediction if prediction > 0.5 else 1 - prediction  
+    print(result, accuracy)
     return jsonify({'result': result, 'accuracy': accuracy})
 
 

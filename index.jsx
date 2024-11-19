@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import "../pneumoniaDetection/index.css"
 
 const PneumoniaDetection = () => {
   const [selectedFile, setSelectedFile] = useState(null);
