@@ -36,16 +36,16 @@ const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds
       const response = await fetch("http://127.0.0.1:5000/predict", {
         method: "POST",
         body: formData,
-        signal: controller.signal,
+        
       });
-      clearTimeout(timeoutId); // Clear timeout if successful
+   
       const data = await response.json();
       setResult(data.result || "Error processing the image");
       setAccuracy(data.accuracy ? `${(data.accuracy * 100).toFixed(2)}%` : "");
       
       setResult(data.result || "Error processing the image");
     } catch (error) {
-      setResult("Error connecting to the server");
+      setResult(error.message);
     }
   };
 
