@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import numpy as np
 import tensorflow as tf
 from PIL import Image
@@ -10,6 +11,7 @@ config.gpu_options.allow_growth = True  # Only allocate memory as needed
 session = Session(config=config)
 tf.compat.v1.keras.backend.set_session(session)
 app = Flask(__name__)
+CORS(app)
 
 # Create an upload directory if it doesn't exist
 UPLOAD_FOLDER = './uploads'
@@ -19,7 +21,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Load your model (update the path accordingly)
-model = tf.keras.models.load_model('../trainedModels/model40.h5')
+model = tf.keras.models.load_model('../trainedModels/model1/model40.h5')
 
 def preprocess_image(image_path):
     """Preprocess the uploaded image to match the model's input shape."""
@@ -53,11 +55,19 @@ def predict():
     preprocessed_image = preprocess_image(image_path)
 
     # Make a prediction
+<<<<<<< HEAD
     prediction = model.predict(preprocessed_image)[0][0]  
     result = "Pneumonia Detected" if prediction > 0.5 else "No Pneumonia"
     accuracy = prediction if prediction > 0.5 else 1 - prediction  
     print(result, accuracy)
     return jsonify({'result': result, 'accuracy': accuracy})
+=======
+    prediction = model.predict(preprocessed_image)[0][0] 
+    result = "Pneumonia Detected" if prediction > 0.5 else "NORMAL"
+    accuracy = prediction if prediction > 0.5 else 1 - prediction 
+
+    return jsonify({'result': result, 'accuracy': f"{accuracy: 0.4f}"})
+>>>>>>> e3f1ba96c35ef62fc3aefb3472e4c5a27d670e8e
 
 
 
