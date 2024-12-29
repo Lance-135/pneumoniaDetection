@@ -7,7 +7,7 @@ from tensorflow.keras.optimizers import Adam #type: ignore
 from tensorflow.keras.losses import BinaryCrossentropy #type: ignore 
 
 # Load the pre-trained VGG16 model without the top layers (classifier part)
-baseModel = tf.keras.applications.VGG16(weights = "imagenet", include_top = False, input_shape = (256, 256, 3))
+baseModel = tf.keras.applications.VGG16(weights = "imagenet", include_top = False, input_shape = (224, 224, 3))
 
 
 # Freeze the layers of base model 
@@ -24,5 +24,5 @@ tfModel = Sequential([
 
 
 tfModel.compile(optimizer = Adam(0.001), loss = BinaryCrossentropy(), metrics = ['accuracy'])
-tfModel.summary()
+# tfModel.summary()
 

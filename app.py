@@ -4,31 +4,32 @@ import numpy as np
 import tensorflow as tf
 from PIL import Image
 import os
-from tensorflow.compat.v1 import ConfigProto, Session
+from tensorflow.compat.v1 import ConfigProto, Session # type: ignore
+
 
 config = ConfigProto()
-config.gpu_options.allow_growth = True  # Only allocate memory as needed
+config.gpu_options.allow_growth = True 
 session = Session(config=config)
 tf.compat.v1.keras.backend.set_session(session)
 app = Flask(__name__)
 CORS(app)
 
-# Create an upload directory if it doesn't exist
 UPLOAD_FOLDER = './uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Set upload folder
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Load your model (update the path accordingly)
+
 model = tf.keras.models.load_model('../trainedModels/model1/model40.h5')
 
 def preprocess_image(image_path):
     """Preprocess the uploaded image to match the model's input shape."""
-    image = Image.open(image_path).convert('L')  # Convert to grayscale
-    image = image.resize((256, 256))  # Resize to 256x256
-    image_array = np.array(image) / 255.0  # Normalize pixel values
-    image_array = np.expand_dims(image_array, axis=(0, -1))  # Add batch and channel dimensions
+    # Convert to grayscale
+    image = Image.open(image_path).convert('L')  
+    image = image.resize((256, 256))  
+    image_array = np.array(image) / 255.0  
+    image_array = np.expand_dims(image_array, axis=(0, -1))  
     return image_array
 
 @app.route('/')
@@ -57,6 +58,7 @@ def predict():
     # Make a prediction
     prediction = model.predict(preprocessed_image)[0][0] 
     result = "Pneumonia Detected" if prediction > 0.5 else "NORMAL"
+    print("prediction: ", prediction)
     accuracy = prediction if prediction > 0.5 else 1 - prediction 
 
     return jsonify({'result': result, 'accuracy': f"{accuracy: 0.4f}"})

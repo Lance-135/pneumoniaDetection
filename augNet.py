@@ -4,10 +4,10 @@ from model.intro import model1,model3
 from tflModel import tfModel
 import numpy as np
 import tensorflow as tf 
-from tensorflow.keras.losses import BinaryCrossentropy # type: ignore
-from tensorflow.keras.optimizers import Adam  # type: ignore
-from tensorflow.keras.preprocessing.image import ImageDataGenerator  # type: ignore
-from tensorflow.keras.callbacks import EarlyStopping # type: ignore
+from keras.losses import BinaryCrossentropy # type: ignore
+from keras.optimizers import Adam  # type: ignore
+from keras.preprocessing.image import ImageDataGenerator  # type: ignore
+from keras.callbacks import EarlyStopping # type: ignore
 import matplotlib.pyplot as plt
 import csv
 from tools import createCheckPoint, imageGenerator
@@ -27,16 +27,18 @@ def trainModel(model):
     # Generates a batch of images
     train_generator = train_datagen.flow_from_directory(
         train_dir,      
-        target_size=(256,256),   
+        # target_size=(256,256),   
+        target_size=(224, 224), # for vgg16   
         batch_size=16,             
         class_mode='binary',       
-        # color_mode='grayscale'     
+        # color_mode='grayscale'     # for tf model color mode is rgb so 
         color_mode= "rgb"
     )
 
     validation_generator = test_datagen.flow_from_directory(
         test_dir,
-        target_size=(256,256),    
+        # target_size=(256,256),    
+        target_size=(224, 224),    # for vgg16
         batch_size=16,
         class_mode='binary',
         # color_mode='grayscale' # For normal model 
@@ -63,7 +65,7 @@ def trainModel(model):
         validation_data = validation_generator,
         validation_steps = np.ceil(validation_generator.samples / validation_generator.batch_size),
         epochs = 5,
-        callbacks = [checkpoint]
+        callbacks = [checkpoint],
     )
 
     plotData(history,saveName)
@@ -73,7 +75,7 @@ def trainModel(model):
 #Function to test the model on test data
 def testModel():
     modelName = input("Enter model name: ")
-    data = get_general_imageData("Val")
+    data = get_general_imageData("train")
     x = np.array([dt[0]/255 for dt in data])
     y = np.array([dt[1] for dt in data])
     ndata = getCategoryImageData("test", "NORMAL")
@@ -84,6 +86,7 @@ def testModel():
     xp = np.array([dt[0] for dt in pdata])
     xp = xp/255
     loaded_model = tf.keras.models.load_model(f"../trainedModels/model1/{modelName}.h5")
+    print(loaded_model.evaluate(x,y))
     predict = loaded_model.predict(xn)
     n = 0
     p = 0
@@ -98,6 +101,7 @@ def testModel():
     print(f"total PNEUMONIA images: {len(xp)}, classified as PNEUMONIA: {p}")
 
 
+
 # Predict Image class
 def predictImage():
     modelName = input("Enter the model name: ")
@@ -108,7 +112,7 @@ def predictImage():
     loaded_model = tf.keras.models.load_model(f"../trainedModels/model1/{modelName}.h5")
     # loaded_model.summary()
     predict = loaded_model.predict(x)   
-    print(predict[0:20])
+    print(predict)
    
 
 # plots the training results in a graph    

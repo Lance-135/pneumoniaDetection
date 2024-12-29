@@ -3,22 +3,20 @@ import cv2
 import glob
 import numpy as np
 import random as rd
-from tensorflow.keras.preprocessing.image import ImageDataGenerator # type: ignore
 
 
 # Get a list of touple with the (image in grayscale, 0 or 1)
 def getCategoryImageData(type, category ):
-    folder_path = f"D:/College/Sixth_sem/project/chest_xray/{type}/{category}/*.jpeg"  # Change to '*.jpg' or any other extension
+    folder_path = f"D:/AustinKarki/repos/inputData/{type}/{category}/*.*"  
     #initializing an empty array
     imgData= []
     # Get a list of all image files in the folder
     image_files = glob.glob(folder_path)
-
     # Loop through the image files
     for file in image_files:
         img = cv2.imread(file, cv2.IMREAD_GRAYSCALE)
         img_resized = cv2.resize(img, (256,256))
-        img_3d = np.expand_dims(img_resized, axis = -1) # for other models
+        img_3d = np.expand_dims(img_resized, axis = -1) 
         # img_3d= cv2.cvtColor(img_resized, cv2.COLOR_GRAY2RGB) #for tfModel
         if category== "NORMAL":
             imgData.append((img_3d,0))

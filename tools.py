@@ -16,12 +16,12 @@ def imageGenerator():
         rescale=1./255,          # Normalizes the images
         rotation_range=10,       
         width_shift_range=0.1,   
-        # zoom_range=0.2,      
-        # brightness_range=[0.7, 1.2],   
-        # shear_range=0.2,
-        # vertical_flip = True,
-        # horizontal_flip= False,   
-        # fill_mode='nearest'      
+        zoom_range=0.2,      
+        brightness_range=[0.7, 1.2],   
+        shear_range=0.2,
+        vertical_flip = True,
+        horizontal_flip= False,   
+        fill_mode='nearest'      
     )
     val_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
         rescale= 1./255

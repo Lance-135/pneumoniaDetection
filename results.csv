@@ -49,3 +49,4 @@ model45,train_acc:  0.9562,train_loss:  0.1343,val_acc:  0.9231,val_loss:  0.304
 model45,train_acc:  0.9549,train_loss:  0.1431,val_acc:  0.9119,val_loss:  0.3601
 model45,train_acc:  0.9600,train_loss:  0.1350,val_acc:  0.9327,val_loss:  0.2849
 tfmodel2,train_acc:  0.9677,train_loss:  0.1411,val_acc:  0.8365,val_loss:  0.6608
+tfmodel3,train_acc:  0.9668,train_loss:  0.1352,val_acc:  0.9006,val_loss:  0.3374
