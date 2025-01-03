@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Login from "./login";
 import SignUp from "./signup";
-import Index from "../../index"; 
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom"; 
+import PneumoniaRoutes from "./index";
 import "./style.css";
 
 function App() {
   const [isSignUpActive, setIsSignUpActive] = useState(false);
+  const navigate = useNavigate(); // This will work because App is now wrapped by BrowserRouter
 
   const toggleToSignUp = () => {
     setIsSignUpActive(true);
@@ -16,38 +17,41 @@ function App() {
     setIsSignUpActive(false);
   };
 
+  const handleLoginSuccess = () => {
+    navigate("/index"); // Navigate to /index
+  };
+
+  const handleSignUpSuccess = () => {
+    navigate("/index"); // Navigate to /index
+  };
+
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Route for Index (Home page after sign-in/signup) */}
-        <Route path="/index" element={<Index />} />
-        
-        {/* Default Route (Home page with SignUp/SignIn) */}
-        <Route
-          path="/"
-          element={
-            <div className={`container ${isSignUpActive ? "active" : ""}`} id="container">
-              <SignUp toggleToSignIn={toggleToSignIn} />
-              <Login toggleToSignUp={toggleToSignUp} />
-              <div className="toggle-container">
-                <div className="toggle">
-                  <div className="toggle-panel toggle-left">
-                    <h1>Welcome Back!</h1>
-                    <p>Enter your personal details to use all of our site features</p>
-                    <button className="hidden" onClick={toggleToSignIn}>Sign In</button>
-                  </div>
-                  <div className="toggle-panel toggle-right">
-                    <h1>Hello, Friend!</h1>
-                    <p>Register with your personal details to use all of our site features</p>
-                    <button className="hidden" onClick={toggleToSignUp}>Sign Up</button>
-                  </div>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <div className={`container ${isSignUpActive ? "active" : ""}`} id="container">
+            <SignUp toggleToSignIn={toggleToSignIn} onSignUpSuccess={handleSignUpSuccess} />
+            <Login toggleToSignUp={toggleToSignUp} onLoginSuccess={handleLoginSuccess} />
+            <div className="toggle-container">
+              <div className="toggle">
+                <div className="toggle-panel toggle-left">
+                  <h1>Welcome Back!</h1>
+                  <p>Enter your personal details to use all of our site features</p>
+                  <button className="hidden" onClick={toggleToSignIn}>Sign In</button>
+                </div>
+                <div className="toggle-panel toggle-right">
+                  <h1>Hello, Friend!</h1>
+                  <p>Register with your personal details to use all of our site features</p>
+                  <button className="hidden" onClick={toggleToSignUp}>Sign Up</button>
                 </div>
               </div>
             </div>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+          </div>
+        }
+      />
+      <Route path="/index/*" element={<PneumoniaRoutes />} />
+    </Routes>
   );
 }
 

@@ -24,5 +24,5 @@ tfModel = Sequential([
 
 
 tfModel.compile(optimizer = Adam(0.001), loss = BinaryCrossentropy(), metrics = ['accuracy'])
-tfModel.summary()
+# tfModel.summary()
 
