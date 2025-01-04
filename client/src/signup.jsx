@@ -7,39 +7,28 @@ function SignUp() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false); 
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Validate all fields
         if (!name || !email || !password) {
             alert("Please fill out all fields.");
             return;
         }
 
-        axios.post('http://localhost:3001/signup', { name, email, password })
-            .then((result) => {
-                console.log(result);
-                
-                if (result.data.error) {
-                    console.error("Error from server:", result.data.error);
-                    alert("Error: " + result.data.error); 
-                } else {
-                    console.log("User created successfully:", result.data);
-                    alert("Signup successful!");
-                    navigate('/Index');
-                }
-            })
-            .catch((err) => {
-                console.error("Request failed:", err);
-                alert("An error occurred. Please try again.");
-            });
-    };
-
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword); 
+        try {
+            const response = await axios.post('http://localhost:3001/signup', { name, email, password });
+            if (response.data.error) {
+                alert(response.data.error);
+            } else {
+                alert("Signup successful!");
+                localStorage.setItem("userEmail", email);
+                localStorage.setItem("userName", name);
+                navigate('/index');
+            }
+        } catch (error) {
+            alert("An error occurred. Please try again.");
+        }
     };
 
     return (
@@ -58,21 +47,12 @@ function SignUp() {
                     onChange={(e) => setEmail(e.target.value)} 
                     value={email} 
                 />
-                    <div className="password-container">
-                      <input 
-                          type={showPassword ? "text" : "password"} 
-                          placeholder="Enter your Password" 
-                          onChange={(e) => setPassword(e.target.value)} 
-                          value={password} 
-                      />
-                      <img 
-                          src={showPassword ? "/hide.png" : "/view.png"} 
-                          alt={showPassword ? "Hide Password" : "Show Password"} 
-                          className="password-icon" 
-                          onClick={togglePasswordVisibility}
-                      />
-                    </div>
-
+                <input 
+                    type="password" 
+                    placeholder="Password" 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    value={password} 
+                />
                 <button type="submit">Sign Up</button>
             </form>
         </div>

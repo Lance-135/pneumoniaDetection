@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS #libray for tensorflow connection 
 import numpy as np
 import tensorflow as tf
 from PIL import Image

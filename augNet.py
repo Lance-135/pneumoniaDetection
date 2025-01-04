@@ -16,8 +16,11 @@ from tools import createCheckPoint, imageGenerator
 def trainModel(model):
     # defining the data directories 
 
-    train_dir  = "D:/AustinKarki/repos/inputData/train"
-    test_dir  = "D:/AustinKarki/repos/inputData/test"
+    # train_dir  = "D:/AustinKarki/repos/inputData/train"
+    # test_dir  = "D:/AustinKarki/repos/inputData/test" 
+    #mero path
+    train_dir  = "D:/College/Sixth_sem/project/chest_xray/train"
+    test_dir  = "D:/College/Sixth_sem/project/chest_xray/test" 
     saveName = input("Enter the model name: ")
 
     # Creates an instance of ImageDataGenerator
@@ -78,7 +81,7 @@ def testModel():
     data = get_general_imageData("test")
     x = np.array([dt[0]/255 for dt in data])
     y = np.array([dt[1] for dt in data])
-    ndata = getCategoryImageData("val", "PNEUMONIA")
+    ndata = getCategoryImageData("val", "NORMAL")
     pdata = getCategoryImageData("val", "PNEUMONIA")
     # data = get_general_imageData("test")
     xn= np.array([dt[0] for dt in ndata])
