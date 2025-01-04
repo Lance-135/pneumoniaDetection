@@ -55,7 +55,7 @@ def trainModel(model):
     #creating checkpoint for the model
     # filePath = f"../trainedModels/model3/{saveName}.h5" 
     filePath = f"../trainedModels/tfmodel/{saveName}.h5"
-    checkpoint = createCheckPoint(filePath)
+    checkpoint, epoch_since_last_save = createCheckPoint(filePath)
 
     # Normal = 0, Pneumonia = 1 .. automatically assigned based on Alphabetical order
     # fit the data on the model 
@@ -69,19 +69,20 @@ def trainModel(model):
     )
 
     plotData(history,saveName)
-    saveResults(history, saveName)
+    saveResults(history, saveName, epoch_since_last_save)
 
 
 #Function to test the model on test data
 def testModel():
     modelName = input("Enter model name: ")
-    data = get_general_imageData("train")
+    data = get_general_imageData("test")
     x = np.array([dt[0]/255 for dt in data])
     y = np.array([dt[1] for dt in data])
-    ndata = getCategoryImageData("test", "NORMAL")
-    pdata = getCategoryImageData("test", "PNEUMONIA")
+    ndata = getCategoryImageData("val", "PNEUMONIA")
+    pdata = getCategoryImageData("val", "PNEUMONIA")
     # data = get_general_imageData("test")
     xn= np.array([dt[0] for dt in ndata])
+    print(xn.shape)
     xn = xn/255
     xp = np.array([dt[0] for dt in pdata])
     xp = xp/255
@@ -130,11 +131,11 @@ def summary():
     model = tf.keras.models.load_model(f"../trainedModels/model1/{modelName}.h5")
     model.summary()
 
-def saveResults(history, saveName):
-    trainLoss = history.history['loss'][-1]
-    trainAcc = history.history["accuracy"][-1]
-    valLoss = history.history["val_loss"][-1]
-    valAcc = history.history["val_accuracy"][-1]
+def saveResults(history, saveName, n):
+    trainLoss = history.history['loss'][-(n-1)]
+    trainAcc = history.history["accuracy"][-(n-1)]
+    valLoss = history.history["val_loss"][-(n-1)]
+    valAcc = history.history["val_accuracy"][-(n-1)]
     with open("results.csv", "a") as file:
         writer = csv.writer(file)
         writer.writerow([
@@ -144,6 +145,6 @@ def saveResults(history, saveName):
             f"val_acc: {valAcc: 0.4f}",
             f"val_loss: {valLoss: 0.4f}"])
 # summary()
-trainModel(tfModel)
-# testModel()
+# trainModel(tfModel)
+testModel()
 # predictImage()

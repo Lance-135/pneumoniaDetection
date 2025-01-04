@@ -9,7 +9,7 @@ def createCheckPoint(filepath):
         mode = "max",
         verbose= 1
     )
-    return checkpoint_callback
+    return checkpoint_callback , checkpoint_callback.epochs_since_last_save
 
 def imageGenerator():
     train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
