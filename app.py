@@ -23,13 +23,35 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 model = tf.keras.models.load_model('../trainedModels/model1/model40.h5')
 
+
+def crop_outer_20_percent(image_path):
+    # Open the image
+    image = Image.open(image_path).convert('L')
+    width, height = image.size
+
+    # Calculate the crop margin (20% of width and height)
+    margin_width = int(0.1 * width)
+    margin_height = int(0.1 * height)
+
+    # Define the crop box
+    left = margin_width
+    upper = margin_height   
+    right = width - margin_width
+    lower = height - margin_height
+
+    # Crop the image
+    cropped_image = image.crop((left, upper, right, lower))
+    return cropped_image
+
 def preprocess_image(image_path):
     """Preprocess the uploaded image to match the model's input shape."""
     # Convert to grayscale
-    image = Image.open(image_path).convert('L')  
+    # image = Image.open(image_path).convert('L') 
+    image = crop_outer_20_percent(image_path)
     image = image.resize((256, 256))  
     image_array = np.array(image) / 255.0  
-    image_array = np.expand_dims(image_array, axis=(0, -1))  
+    image_array = np.expand_dims(image_array, axis=(0, -1)) 
+    print(image_array.shape) 
     return image_array
 
 @app.route('/')

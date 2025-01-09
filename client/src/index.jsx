@@ -1,13 +1,9 @@
 import React, { useState } from "react";
-<<<<<<< HEAD:index.jsx
-import "./index.css"
-=======
 import { Routes, Route, Link, Outlet } from "react-router-dom"; 
 import axios from "axios";
 import Profile from "./profile";
 import History from "./history";
 import "./index.css";
->>>>>>> 2d99601b7081dc8055511364ab6644862540c0d2:client/src/index.jsx
 
 const PneumoniaDetection = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -59,7 +55,7 @@ const PneumoniaDetection = () => {
       });
       alert("Prediction result saved to your history.");
     } catch (error) {
-      setResult(error.message);
+      // setResult(error.message);
     }
   };
 

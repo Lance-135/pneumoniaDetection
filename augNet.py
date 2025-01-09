@@ -16,11 +16,11 @@ from tools import createCheckPoint, imageGenerator
 def trainModel(model):
     # defining the data directories 
 
-    # train_dir  = "D:/AustinKarki/repos/inputData/train"
-    # test_dir  = "D:/AustinKarki/repos/inputData/test" 
+    train_dir  = "D:/AustinKarki/repos/inputData/train"
+    test_dir  = "D:/AustinKarki/repos/inputData/test" 
     #mero path
-    train_dir  = "D:/College/Sixth_sem/project/chest_xray/train"
-    test_dir  = "D:/College/Sixth_sem/project/chest_xray/test" 
+    # train_dir  = "D:/College/Sixth_sem/project/chest_xray/train"
+    # test_dir  = "D:/College/Sixth_sem/project/chest_xray/test" 
     saveName = input("Enter the model name: ")
 
     # Creates an instance of ImageDataGenerator
@@ -30,22 +30,22 @@ def trainModel(model):
     # Generates a batch of images
     train_generator = train_datagen.flow_from_directory(
         train_dir,      
-        # target_size=(256,256),   
-        target_size=(224, 224), # for vgg16   
+        target_size=(256,256),   
+        # target_size=(224, 224), # for vgg16   
         batch_size=16,             
         class_mode='binary',       
-        # color_mode='grayscale'     # for tf model color mode is rgb so 
-        color_mode= "rgb"
+        color_mode='grayscale'     # for tf model color mode is rgb so 
+        # color_mode= "rgb"
     )
 
     validation_generator = test_datagen.flow_from_directory(
         test_dir,
-        # target_size=(256,256),    
-        target_size=(224, 224),    # for vgg16
+        target_size=(256,256),    
+        # target_size=(224, 224),    # for vgg16
         batch_size=16,
         class_mode='binary',
-        # color_mode='grayscale' # For normal model 
-        color_mode= "rgb"
+        color_mode='grayscale' # For normal model 
+        # color_mode= "rgb"
     )
     # call back functions   
     # instance of early stopping 
@@ -56,8 +56,8 @@ def trainModel(model):
     )
     
     #creating checkpoint for the model
-    # filePath = f"../trainedModels/model3/{saveName}.h5" 
-    filePath = f"../trainedModels/tfmodel/{saveName}.h5"
+    filePath = f"../trainedModels/model3/{saveName}.h5" 
+    # filePath = f"../trainedModels/tfmodel/{saveName}.h5"
     checkpoint, epoch_since_last_save = createCheckPoint(filePath)
 
     # Normal = 0, Pneumonia = 1 .. automatically assigned based on Alphabetical order
@@ -67,7 +67,7 @@ def trainModel(model):
         steps_per_epoch = np.ceil(train_generator.samples / train_generator.batch_size),
         validation_data = validation_generator,
         validation_steps = np.ceil(validation_generator.samples / validation_generator.batch_size),
-        epochs = 5,
+        epochs = 20,
         callbacks = [checkpoint],
     )
 
@@ -78,11 +78,11 @@ def trainModel(model):
 #Function to test the model on test data
 def testModel():
     modelName = input("Enter model name: ")
-    data = get_general_imageData("test")
+    data = get_general_imageData("train")
     x = np.array([dt[0]/255 for dt in data])
     y = np.array([dt[1] for dt in data])
-    ndata = getCategoryImageData("val", "NORMAL")
-    pdata = getCategoryImageData("val", "PNEUMONIA")
+    ndata = getCategoryImageData("test", "NORMAL")
+    pdata = getCategoryImageData("test", "PNEUMONIA")
     # data = get_general_imageData("test")
     xn= np.array([dt[0] for dt in ndata])
     print(xn.shape)
@@ -109,7 +109,7 @@ def testModel():
 # Predict Image class
 def predictImage():
     modelName = input("Enter the model name: ")
-    data = getCategoryImageData("val", "inp")
+    data = getCategoryImageData("input", "PNEUMONIA")
     x = np.array([dt[0] for dt in data])
     x = x/255
     print(x.shape)
@@ -123,10 +123,11 @@ def predictImage():
 def plotData(history, saveName):
     plt.plot(history.history['loss'], label='Train Loss')
     plt.plot(history.history['val_loss'], label='Validation Loss')
-    plt.title(f'{saveName} Loss')
+    plt.title('model Loss')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.legend()
+    plt.xticks(range(0, 21))
     plt.show()
 
 def summary():
@@ -148,6 +149,6 @@ def saveResults(history, saveName, n):
             f"val_acc: {valAcc: 0.4f}",
             f"val_loss: {valLoss: 0.4f}"])
 # summary()
-# trainModel(tfModel)
-testModel()
-# predictImage()
+# trainModel(model3)
+# testModel()
+predictImage()
